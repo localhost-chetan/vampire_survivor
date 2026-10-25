@@ -1,6 +1,9 @@
+from vampire_survivor.sprites import CollisionSprite
 import pygame
 from .settings import *
 from .player import Player
+from .sprites import *
+from random import randint
 
 
 class Game:
@@ -15,8 +18,18 @@ class Game:
 
         # groups
         self.all_sprites = pygame.sprite.Group()
+        self.collision_sprites = pygame.sprite.Group()
 
-        self.player = Player(position=(400, 300), groups=(self.all_sprites,))
+        # sprites
+        self.player = Player(position=(400, 300), groups=(
+            self.all_sprites,), collision_sprites=self.collision_sprites)
+
+        for _ in range(5):
+            x, y = randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)
+            width, height = randint(60, 100), randint(50, 100)
+
+            CollisionSprite(position=(x, y), size=(
+                width, height), groups=(self.all_sprites, self.collision_sprites))
 
     def run(self):
         while self.is_running:
